@@ -1,3 +1,5 @@
+// отвечает за форму за ее отображение и взаимодействие с пользователем
+//за разметку формы
 export  class Form {
   protected formElement: HTMLFormElement;
   protected inputField: HTMLInputElement;
@@ -10,8 +12,7 @@ export  class Form {
       this.handleFormSubmit(this.inputField.value)
     })
   }
-
-
+  
   render(){
     return this.formElement
   }
