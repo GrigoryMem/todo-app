@@ -1,3 +1,5 @@
+import {IItem} from '../types';
+
 export class Item {
 
   protected itemElement: HTMLElement;
@@ -8,8 +10,8 @@ export class Item {
     this.title = this.itemElement.querySelector('.todo-item__text');
   }
 
-  render(item:string){
-    this.title.textContent = item;
+  render(item:IItem){
+    this.title.textContent = item.name;
     return this.itemElement;
   }
 

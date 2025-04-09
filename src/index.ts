@@ -13,7 +13,7 @@ const todoForm = new Form(formElement,handleSubmitForm);
 function handleSubmitForm(data:string){
   // data - строка из поля ввода
     const todoItem = new Item(template);
-    const itemElement = todoItem.render(data);
+    const itemElement = todoItem.render({id: '8', name: data});
     contentElement.prepend(itemElement);
     todoForm.clearValue();
 
