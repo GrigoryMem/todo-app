@@ -8,7 +8,7 @@ export interface IItem {
 
 export interface IToDoModel {
   items: IItem[]
-  addItem(item: IItem): void
+  addItem(item: string): IItem
   removeItem(id: string): void
 
 }
