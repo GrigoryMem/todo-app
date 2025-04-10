@@ -1,6 +1,6 @@
 import { IItem } from "../types";
 import { IToDoModel } from "../types";
-// слой модели/данных
+// слой модели/данных - накопление данных, их изменение
 
 export class ToDoModel implements IToDoModel {
   protected _items:IItem[];
