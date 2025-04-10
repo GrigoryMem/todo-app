@@ -2,6 +2,7 @@ import "./styles/styles.css"
 import {todos} from './utils/constants';
 import {Item} from './components/Item';
 import {Form} from './components/Form';
+import {ToDoModel} from './components/ToDoModel';
 
 const contentElement = document.querySelector('.todos__list') 
 
@@ -26,3 +27,11 @@ todos.forEach((item)=>{
   contentElement.prepend(itemElement)
 })
 
+
+const todoArray = new ToDoModel();
+todoArray.items = todos;
+console.log(todoArray.items.map(item=>item));
+console.log(todoArray.addItem('Создать класс с данными'));
+console.log(todoArray.items);
+todoArray.removeItem('2')
+console.log(todoArray.items);

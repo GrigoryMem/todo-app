@@ -1,6 +1,6 @@
 import { IItem } from "../types";
 import { IToDoModel } from "../types";
-
+// слой модели/данных
 
 export class ToDoModel implements IToDoModel {
   protected _items:IItem[];
@@ -18,6 +18,7 @@ export class ToDoModel implements IToDoModel {
   }
 
   addItem(data: string) {
+    // если крупное приложени то библиотека по генерации  уникального id
       const uniqueId:number = Math.max(...this._items.map(item => Number(item.id)))+1;
       const newItem:IItem = {id:String(uniqueId), name: data,}
       this._items.push(newItem);

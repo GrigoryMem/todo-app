@@ -1,5 +1,5 @@
 import {IItem} from '../types';
-
+// слой отображения
 export class Item {
 
   protected itemElement: HTMLElement;
