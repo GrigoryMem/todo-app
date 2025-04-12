@@ -30,8 +30,3 @@ todos.forEach((item)=>{
 
 const todoArray = new ToDoModel();
 todoArray.items = todos;
-console.log(todoArray.items.map(item=>item));
-console.log(todoArray.addItem('Создать класс с данными'));
-console.log(todoArray.items);
-todoArray.removeItem('2')
-console.log(todoArray.items);
