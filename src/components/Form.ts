@@ -26,7 +26,7 @@ export  class Form {
 
   constructor(formTemplate: HTMLTemplateElement) {
     // нужные элементы формы сохраняем в полях класса
-    this.formElement = formTemplate.content.querySelector('.todo-form').cloneNode(true) as HTMLFormElement;
+    this.formElement = formTemplate.content.querySelector('.todos__form').cloneNode(true) as HTMLFormElement;
     this.inputField = this.formElement.querySelector('.todo-form__input') as HTMLInputElement;
     this.submitButton = this.formElement.querySelector('.todo-form__submit-btn');
 
