@@ -23,22 +23,26 @@ todoForm.setHandler(handleSubmitForm)
 page.formContainer = todoForm.render();
 // обработчик формы
 function handleSubmitForm(data:string){
-  // data - строка из поля ввода
-    const todoItem = new Item(itemTemplate);
-    const itemElement = todoItem.render({id: '8', name: data});
-    contentElement.prepend(itemElement);
-    todoForm.clearValue();
-
+  todoArray.addItem(data)
+  // после добавелние дела очищаем форму
+  todoForm.clearValue()
+  // после изменения массива карточек вызываем изменение отображения - поменялись данные
+  // перерендерили страницу
+  renderTodoItems()
 }
 
 // выводим из массива данных - создаем массив карточек который  потом выведем на страницу
 
-page.todoContainer= todoArray.items.map((item)=>{
-  // одеваем данные карточки в разметку
-  const todoItem = new Item(itemTemplate)
-  const itemElement = todoItem.render(item)
-  return itemElement
-})
+// функция которая генерирует карточки на страницу из массива 
+function renderTodoItems(){
+  page.todoContainer= todoArray.items.map((item)=>{ //возврщаем массив готовых карточек
+    // одеваем данные карточки в разметку
+    const todoItem = new Item(itemTemplate)
+    const itemElement = todoItem.render(item)
+    return itemElement
+  }).reverse();
+}
 
-
+// отображение карточек
+renderTodoItems();
 
