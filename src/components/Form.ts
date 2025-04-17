@@ -3,7 +3,7 @@
 // интерфейс предусмвтривает основной функционал формы
 export interface IForm {
   buttonText: string;
-  placeholder: string;
+  placeHolder: string;
   setHandler(handler: Function): void
   render(): HTMLFormElement;
   setValue(data:string):void;

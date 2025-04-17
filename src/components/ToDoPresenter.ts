@@ -1,5 +1,5 @@
 import { IToDoModel } from '../types';
-import { IViewItem, IViewItemConstructor } from './Item';
+import { IViewItem, IViewItemConstructor } from './item';
 import { IForm, IFormConstructor } from './Form';
 import { IPage } from './Page';
 // ItemPresenter — это контролирующий класс, который:
