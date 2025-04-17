@@ -6,7 +6,8 @@ import {IItem} from '../types';
 export interface IViewItem {
   id:string;
   name:string;
-  render(item:IItem):HTMLElement
+  render(item:IItem):HTMLElement;
+  setCopyHandler(handler:Function):void
 }
 
 // интерфейс для конструктора описывает параметры кот принимает конструктор 
