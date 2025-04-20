@@ -21,10 +21,13 @@ export class Item implements IViewItem{
   protected itemElement: HTMLElement;
   protected title: HTMLElement;
   protected _id:string;
+  protected copyButton: HTMLElement;
+  protected handleCopyItem: Function; // поле для обработчика
 
   constructor(template: HTMLTemplateElement){
     this.itemElement = template.content.querySelector('.todo-item').cloneNode(true) as HTMLElement;
     this.title = this.itemElement.querySelector('.todo-item__text');
+    this.copyButton = this.itemElement.querySelector('.todo-item__copy');
   }
 
   set id(value: string) {
@@ -47,6 +50,18 @@ export class Item implements IViewItem{
     this.name = item.name; // вставляем данные в элемент используя геттер сеттер
     this.id = item.id  // аналогично
     return this.itemElement;
+  }
+
+  setCopyHandler(handleCopyItem: Function): void {
+      this.handleCopyItem = handleCopyItem // назначаем полю класса обработчик
+      this.copyButton.addEventListener('click',
+      (evt)=>{
+        this.handleCopyItem(this) // вызываем обработчик - как поле класса
+        // в кач параметра мы будем передавать экземпляр самого класса
+        // чтобы вобработчике можно прописать люб действия 
+        //которые нам могут потребоваться  
+        //  this позвполучить доступ ко всем данным карточки которые есть на экране
+      })
   }
 
 }
