@@ -10,6 +10,6 @@ export interface IToDoModel {
   items: IItem[];
   addItem(item: string): IItem;
   removeItem(id: string): void;
-  getItem(id:string):IItem;
+  getItem(id:string):IItem; //  возвращает элемент по id
 
 }

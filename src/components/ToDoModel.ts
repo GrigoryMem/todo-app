@@ -28,4 +28,8 @@ export class ToDoModel implements IToDoModel {
   removeItem(id: string){
     this._items = this._items.filter(item => item.id !== id);
   }
+
+  getItem(id:string):IItem{
+    return this._items.find(item => item.id === id);
+  }
 }
