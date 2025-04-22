@@ -42,6 +42,8 @@ export class ItemPresenter {
             this.todoForm.setHandler(this.handleSubmitForm.bind(this));
             // Вставляет форму в интерфейс (formContainer).
             this.viewPageContainer.formContainer = this.todoForm.render();
+
+
         }
 
         handleSubmitForm(data: string) {
@@ -51,31 +53,31 @@ export class ItemPresenter {
             this.todoForm.clearValue();//Очищает форму.
         }
 
-        // handleCopyItem(item: IViewItem) {
-        //     // обработчик копирования задачи
+        handleCopyItem(item: IViewItem) {
+            // item: IViewItem - передается объект this см Item метод setCopyHandler т е this это экземпляр отображения карточки
+                //     // обработчик копирования задачи
         //     // Копирует задачу по ID.
-        //     const copyedItem = this.model.getItem(item.id)
+            const copyedItem = this.model.getItem(item.id)
         //     // Добавляет копию в список.
-        //     this.model.addItem(copyedItem.name);
+            this.model.addItem(copyedItem.name); // название используется чтобы создать новое дело
         //     // Перерисовывает интерфейс.
-        //     this.renderView();
-        // }
+            this.renderView(); // без дополнитеьных методов вставки обновляем отображение карточек где будет новая карточка
+        }
     
-        // handleDeleteItem(item: IViewItem) {
-        //     // обработчик удаления задачи
-        //     // Удаляет задачу по ID.
-        //     this.model.removeItem(item.id);
-        //     // Обновляет интерфейс.
-        //     this.renderView();
-        // }    
-
+        
         renderView() {
             // отображение списка задач;-Для каждого элемента из модели создает визуальный компонент:
             const itemList = this.model.items.map((item) => {
             const todoItem = new this.viewItemConstructor(this.itemTemplate); // визуализируем нашу задачу
                 // Назначаем обработчики копирования и удаления.
-    			// todoItem.setCopyHandler(this.handleCopyItem.bind(this))
-    			// todoItem.setDeleteHandler(this.handleDeleteItem.bind(this))
+                // Мы говорим: "Когда пользователь нажмёт на кнопку копирования этой карточки — 
+                // вызови вот эту функцию handleCopyItem, и чтобы внутри неё this был ItemPresenter".
+                // те в setCopyHandler  мы передаем функцию перезнтера в контексте самого презентера
+                //  которая затем обрабазывает сам экземпляр Item
+                // Получается, что Item сообщает Presenter'у: "Вот я, карточка,
+                //  по мне кликнули. Делай с этим что хочешь."
+    			todoItem.setCopyHandler(this.handleCopyItem.bind(this))
+    		
                 // Рендерит HTML для каждого элемента.
             const itemElement = todoItem.render(item);
             return itemElement;
@@ -84,3 +86,14 @@ export class ItemPresenter {
             this.viewPageContainer.todoContainer = itemList;
         }
     }
+    // Простыми словами
+    // Presenter даёт Item'у функцию:
+    // «Позови меня, когда по тебе кликнут».
+    
+    // Item зовёт Presenter, передавая себя:
+    // «Эй, вот я! Пользователь нажал на меня!»
+    
+    // Presenter обрабатывает ситуацию:
+    // «Отлично, дублирую тебя в список и перерисовываю всё».
+
+

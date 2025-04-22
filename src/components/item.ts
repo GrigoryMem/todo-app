@@ -56,6 +56,9 @@ export class Item implements IViewItem{
       this.handleCopyItem = handleCopyItem // назначаем полю класса обработчик
       this.copyButton.addEventListener('click',
       (evt)=>{
+        // см ItemPresenter метод handleCopyItem !!!
+        // те в setCopyHandler  мы передаем функцию перезнтера в контексте самого презентера
+                //  которая затем обрабазывает сам экземпляр Item - this здесь — экземпляр Item, то есть конкретная карточка.
         this.handleCopyItem(this) // вызываем обработчик - как поле класса
         // в кач параметра мы будем передавать экземпляр самого класса
         // чтобы вобработчике можно прописать люб действия 
