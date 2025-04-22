@@ -9,6 +9,7 @@ export interface IViewItem {
   render(item:IItem):HTMLElement;
   setDeleteHandler(handleDeleteItem:Function):void
   setCopyHandler(handleCopyItem:Function):void
+  setEditHandler(hanldeEditItem:Function):void;
  }
 
 // интерфейс для конструктора описывает параметры кот принимает конструктор 
@@ -23,9 +24,11 @@ export class Item implements IViewItem{
   protected title: HTMLElement;
   protected deleteButton: HTMLButtonElement;
   protected copyButton: HTMLButtonElement;
+  protected editButton: HTMLButtonElement;
   protected _id:string;
   protected handleDeleteItem: Function;// поле для обработчика удаления
   protected handleCopyItem: Function; // поле для обработчика копирования
+  protected hanldeEditItem: Function;// поле для обработчика редактирования
 
   
 
@@ -34,6 +37,7 @@ export class Item implements IViewItem{
     this.title = this.itemElement.querySelector('.todo-item__text');
     this.deleteButton = this.itemElement.querySelector('.todo-item__del');
     this.copyButton = this.itemElement.querySelector('.todo-item__copy');
+    this.editButton = this.itemElement.querySelector('.todo-item__edit');
   }
 
   set id(value: string) {
@@ -72,6 +76,13 @@ export class Item implements IViewItem{
         //которые нам могут потребоваться  
         //  this позвполучить доступ ко всем данным карточки которые есть на экране
       })
+  }
+
+  setEditHandler(hanldeEditItem: Function) {
+    this.hanldeEditItem = hanldeEditItem;
+    this.editButton.addEventListener('click',(evt)=>{
+      this.hanldeEditItem(this)
+    })
   }
   
 
