@@ -63,7 +63,13 @@ export class ItemPresenter {
         //     // Перерисовывает интерфейс.
             this.renderView(); // без дополнитеьных методов вставки обновляем отображение карточек где будет новая карточка
         }
-    
+        
+        handleDeleteItem(item:IViewItem) {
+            // удалить элемент из модели
+            this.model.removeItem(item.id)
+            // обновить отображение
+            this.renderView()
+        }
         
         renderView() {
             // отображение списка задач;-Для каждого элемента из модели создает визуальный компонент:
@@ -76,7 +82,9 @@ export class ItemPresenter {
                 //  которая затем обрабазывает сам экземпляр Item
                 // Получается, что Item сообщает Presenter'у: "Вот я, карточка,
                 //  по мне кликнули. Делай с этим что хочешь."
+                //  установим обработчики для каждой карточки
     			todoItem.setCopyHandler(this.handleCopyItem.bind(this))
+                todoItem.setDeleteHandler(this.handleDeleteItem.bind(this))
     		
                 // Рендерит HTML для каждого элемента.
             const itemElement = todoItem.render(item);

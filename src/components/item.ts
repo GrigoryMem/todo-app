@@ -7,8 +7,9 @@ export interface IViewItem {
   id:string;
   name:string;
   render(item:IItem):HTMLElement;
-  setCopyHandler(handler:Function):void
-}
+  setDeleteHandler(handleDeleteItem:Function):void
+  setCopyHandler(handleCopyItem:Function):void
+ }
 
 // интерфейс для конструктора описывает параметры кот принимает конструктор 
 // и какой объект дает навыходе когда мы создаем экземпляр
@@ -20,13 +21,18 @@ export class Item implements IViewItem{
 
   protected itemElement: HTMLElement;
   protected title: HTMLElement;
+  protected deleteButton: HTMLButtonElement;
+  protected copyButton: HTMLButtonElement;
   protected _id:string;
-  protected copyButton: HTMLElement;
-  protected handleCopyItem: Function; // поле для обработчика
+  protected handleDeleteItem: Function;// поле для обработчика удаления
+  protected handleCopyItem: Function; // поле для обработчика копирования
+
+  
 
   constructor(template: HTMLTemplateElement){
     this.itemElement = template.content.querySelector('.todo-item').cloneNode(true) as HTMLElement;
     this.title = this.itemElement.querySelector('.todo-item__text');
+    this.deleteButton = this.itemElement.querySelector('.todo-item__del');
     this.copyButton = this.itemElement.querySelector('.todo-item__copy');
   }
 
@@ -46,10 +52,11 @@ export class Item implements IViewItem{
     return this.title.textContent || '';
   }
 
-  render(item:IItem){
-    this.name = item.name; // вставляем данные в элемент используя геттер сеттер
-    this.id = item.id  // аналогично
-    return this.itemElement;
+  setDeleteHandler(handleDeleteItem: Function): void {
+    this.handleDeleteItem = handleDeleteItem;
+    this.deleteButton.addEventListener('click',(evt)=>{
+      this.handleDeleteItem(this)
+    })
   }
 
   setCopyHandler(handleCopyItem: Function): void {
@@ -66,5 +73,16 @@ export class Item implements IViewItem{
         //  this позвполучить доступ ко всем данным карточки которые есть на экране
       })
   }
+  
+
+  render(item:IItem){
+    this.name = item.name; // вставляем данные в элемент используя геттер сеттер
+    this.id = item.id  // аналогично
+    return this.itemElement;
+  }
+
+ 
+
+ 
 
 }
