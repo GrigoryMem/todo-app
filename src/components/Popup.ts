@@ -1,11 +1,11 @@
 export interface IPopup {
   content: HTMLElement;
-  open();
-  close();
+  open():void;
+  close():void;
 }
 
 
-class Popup implements IPopup {
+export class Popup implements IPopup {
   protected closeButton: HTMLButtonElement;
   protected _content: HTMLElement; //приватное или защищённое поле по соглашению.
   // Это не делает свойство действительно приватным, но даёт понять:
@@ -32,10 +32,10 @@ class Popup implements IPopup {
   }
 
   open(){
-    this.container.classList.add('.popup_is-opened')
+    this.container.classList.add('popup_is-opened')
   }
   close(){
-    this.container.classList.remove('.popup)_is-opened')
+    this.container.classList.remove('popup_is-opened')
     // очистка содержимого поля от прошлого использования
     this.content = null
 

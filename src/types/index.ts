@@ -11,5 +11,6 @@ export interface IToDoModel {
   addItem(item: string): IItem;
   removeItem(id: string): void;
   getItem(id:string):IItem; //  возвращает элемент по id
+  editItem(id:string, name:string):void;
 
 }
