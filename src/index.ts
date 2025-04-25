@@ -6,6 +6,7 @@ import {ToDoModel} from './components/ToDoModel';
 import {Page} from './components/Page';
 import {ItemPresenter} from './components/ToDoPresenter';
 import {Popup} from './components/Popup';
+import {EventEmitter} from './components/EventEmitter';
 
 const contentElement = document.querySelector('.content') as HTMLElement;
 
@@ -22,3 +23,22 @@ const modal = new Popup(popupeElement)
 const itemPresenter = new ItemPresenter(todoArray, Form, itemContainer, Item, modal);
 itemPresenter.init()
 itemPresenter.renderView();
+
+
+
+
+const emitter = new EventEmitter();
+
+// Подписываемся на конкретное событие
+// emitter.on('login', (data) => {
+// 	console.log('✅ User logged in:', data);
+// });
+
+// Подписываемся на ВСЕ события
+emitter.onAll((event) => {
+	console.log('🌐 Событие произошло:', event.eventName, event.data);
+});
+
+// Эмитим событие
+emitter.emit('login', { user: 'Alice' });
+

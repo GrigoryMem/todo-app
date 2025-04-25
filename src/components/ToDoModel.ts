@@ -1,8 +1,9 @@
 import { IItem } from "../types";
 import { IToDoModel } from "../types";
+import { EventEmitter } from "./EventEmitter";
 // слой модели/данных - накопление данных, их изменение
 
-export class ToDoModel implements IToDoModel {
+export class ToDoModel extends EventEmitter implements IToDoModel {
   protected _items:IItem[];
 
   constructor() {
