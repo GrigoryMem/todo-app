@@ -36,7 +36,7 @@ export class ToDoModel extends EventEmitter implements IToDoModel {
 
     this._items = this._items.filter(item => item.id !== id);
     // при удалении элемента в массив тоже генерируем событие
-   
+  //  генерируем событие
     this.emit('changed')
   
   }

@@ -54,6 +54,7 @@ export class ItemPresenter {
             this.todoEditForm = new this.formConstructor(this.formTemplate)
             this.todoEditForm.buttonText = 'Изменить'
             this.todoEditForm.placeHolder = 'Новое название'
+            // обработчик который срабатывает на любое изменение данных:
             this.model.on('changed', ()=>{
                 // что делать если изменились данные, рендерим страницу
                 // Перерисовывает список задач.(обновляем отображение задач)
