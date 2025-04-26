@@ -1,7 +1,10 @@
 // отвечает за форму за ее отображение и взаимодействие с пользователем
 //за разметку формы
+
+import { EventEmitter, IEvents } from "./EventEmitter";
+
 // интерфейс предусмвтривает основной функционал формы
-export interface IForm {
+export interface IForm  extends IEvents{
   buttonText: string;
   placeHolder: string;
   setHandler(handler: Function): void
@@ -18,13 +21,14 @@ export interface IFormConstructor {
 
 
 
-export  class Form {
+export  class Form  extends EventEmitter implements IForm {
   protected formElement: HTMLFormElement;
   protected inputField: HTMLInputElement;
   protected handleFormSubmit: Function;
   protected submitButton: HTMLButtonElement;
 
   constructor(formTemplate: HTMLTemplateElement) {
+    super();// выпонляем констуруктор родителя EventEmitter
     // нужные элементы формы сохраняем в полях класса
     this.formElement = formTemplate.content.querySelector('.todos__form').cloneNode(true) as HTMLFormElement;
     this.inputField = this.formElement.querySelector('.todo-form__input') as HTMLInputElement;
