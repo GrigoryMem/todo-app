@@ -1,15 +1,13 @@
 import {IItem} from '../types';
+import { EventEmitter,IEvents } from './EventEmitter';
 // слой отображения/представления - корректное отображение и взаимодействие пользователя с карточкой
 
 // интерфейс для элемента который создается как экземпляр этого класса
 // описывает будущий объект
-export interface IViewItem {
+export interface IViewItem  extends IEvents{
   id:string;
   name:string;
   render(item:IItem):HTMLElement;
-  setDeleteHandler(handleDeleteItem:Function):void
-  setCopyHandler(handleCopyItem:Function):void
-  setEditHandler(hanldeEditItem:Function):void;
  }
 
 // интерфейс для конструктора описывает параметры кот принимает конструктор 
@@ -18,7 +16,7 @@ export interface IViewItemConstructor {
   new (template: HTMLTemplateElement): IViewItem
 }
 
-export class Item implements IViewItem{
+export class Item  extends EventEmitter implements IViewItem{
 
   protected itemElement: HTMLElement;
   protected title: HTMLElement;
@@ -26,18 +24,24 @@ export class Item implements IViewItem{
   protected copyButton: HTMLButtonElement;
   protected editButton: HTMLButtonElement;
   protected _id:string;
-  protected handleDeleteItem: Function;// поле для обработчика удаления
-  protected handleCopyItem: Function; // поле для обработчика копирования
-  protected hanldeEditItem: Function;// поле для обработчика редактирования
+ 
 
   
 
   constructor(template: HTMLTemplateElement){
+    super();// вызываем родительский конструктор
     this.itemElement = template.content.querySelector('.todo-item').cloneNode(true) as HTMLElement;
     this.title = this.itemElement.querySelector('.todo-item__text');
     this.deleteButton = this.itemElement.querySelector('.todo-item__del');
     this.copyButton = this.itemElement.querySelector('.todo-item__copy');
     this.editButton = this.itemElement.querySelector('.todo-item__edit');
+
+
+    // при клике на все кнопки нужно сгенерировать события
+    //  когда пользователь кликлнет сгенерируем событие соотв-го типа для нашего приложения
+    this.deleteButton.addEventListener('click',()=> this.emit('delete',{id:this._id}));
+    this.copyButton.addEventListener('click', ()=>this.emit('copy',{id:this._id}));
+    this.editButton.addEventListener('click',()=>this.emit('edit',{id:this._id}));
   }
 
   set id(value: string) {
@@ -56,35 +60,7 @@ export class Item implements IViewItem{
     return this.title.textContent || '';
   }
 
-  setDeleteHandler(handleDeleteItem: Function): void {
-    this.handleDeleteItem = handleDeleteItem;
-    this.deleteButton.addEventListener('click',(evt)=>{
-      this.handleDeleteItem(this)
-    })
-  }
-
-  setCopyHandler(handleCopyItem: Function): void {
-      this.handleCopyItem = handleCopyItem // назначаем полю класса обработчик
-      this.copyButton.addEventListener('click',
-      (evt)=>{
-        // см ItemPresenter метод handleCopyItem !!!
-        // те в setCopyHandler  мы передаем функцию перезнтера в контексте самого презентера
-                //  которая затем обрабазывает сам экземпляр Item - this здесь — экземпляр Item, то есть конкретная карточка.
-        this.handleCopyItem(this) // вызываем обработчик - как поле класса
-        // в кач параметра мы будем передавать экземпляр самого класса
-        // чтобы вобработчике можно прописать люб действия 
-        //которые нам могут потребоваться  
-        //  this позвполучить доступ ко всем данным карточки которые есть на экране
-      })
-  }
-
-  setEditHandler(hanldeEditItem: Function) {
-    this.hanldeEditItem = hanldeEditItem;
-    this.editButton.addEventListener('click',(evt)=>{
-      this.hanldeEditItem(this)
-    })
-  }
-  
+ 
 
   render(item:IItem){
     this.name = item.name; // вставляем данные в элемент используя геттер сеттер

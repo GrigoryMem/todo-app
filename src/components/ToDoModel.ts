@@ -7,7 +7,7 @@ export class ToDoModel extends EventEmitter implements IToDoModel {
   protected _items:IItem[];
 
   constructor() {
-    super();// выпонляем констуруктор родителя
+    super();// выпонляем констуруктор родителя EventEmitter
     this._items = [];
   }
 

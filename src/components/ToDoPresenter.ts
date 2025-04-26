@@ -79,7 +79,7 @@ export class ItemPresenter {
             this.modal.close()
         }
 
-        handleCopyItem(item: IViewItem) {
+        handleCopyItem(item: {id: string}) {
             // item: IViewItem - передается объект this см Item метод setCopyHandler т е this это экземпляр отображения карточки
                 //     // обработчик копирования задачи
         //     // Копирует задачу по ID.
@@ -90,13 +90,13 @@ export class ItemPresenter {
 
         }
         
-        handleDeleteItem(item:IViewItem) {
+        handleDeleteItem(item: {id: string}) {
             // удалить элемент из модели
             this.model.removeItem(item.id)
           
         }
         // обработчик для самой кнопки редактирования
-        handleEditItem(item:IViewItem){
+        handleEditItem(item: {id: string}){
             // item:IViewItem  получаем экземпляр класса Item в кот произошло нажатие
             // найдем элемент массива  item в модели данных
             const editedItem = this.model.getItem(item.id)
@@ -123,9 +123,11 @@ export class ItemPresenter {
                 // Получается, что Item сообщает Presenter'у: "Вот я, карточка,
                 //  по мне кликнули. Делай с этим что хочешь."
                 //  установим обработчики для каждой карточки
-    			todoItem.setCopyHandler(this.handleCopyItem.bind(this))
-                todoItem.setDeleteHandler(this.handleDeleteItem.bind(this))
-                todoItem.setEditHandler(this.handleEditItem.bind(this))
+                // подписываемся на события для кароточки:
+                // мы подписываемся на события каждого экземпляра карточки (todoItem).
+    			todoItem.on('copy',this.handleCopyItem.bind(this))
+                todoItem.on('delete',this.handleDeleteItem.bind(this))
+                todoItem.on('edit',this.handleEditItem.bind(this))
                 // Рендерит HTML для каждого элемента.
             const itemElement = todoItem.render(item);
             return itemElement;
