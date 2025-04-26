@@ -2,7 +2,8 @@ import { IToDoModel } from '../types';
 import { IViewItem, IViewItemConstructor } from './item';
 import { IForm, IFormConstructor } from './Form';
 import { IPage } from './Page';
-import {IPopup} from './Popup'
+import {IPopup} from './Popup';
+import { IItem } from '../types';
 // ItemPresenter — это контролирующий класс, который:
 
 // берет шаблоны из DOM;
@@ -53,18 +54,26 @@ export class ItemPresenter {
             this.todoEditForm = new this.formConstructor(this.formTemplate)
             this.todoEditForm.buttonText = 'Изменить'
             this.todoEditForm.placeHolder = 'Новое название'
+            this.model.on('changed', ()=>{
+                // что делать если изменились данные, рендерим страницу
+                // Перерисовывает список задач.(обновляем отображение задач)
+                this.renderView()
+            })
+       
+           
+            
         }
 
         handleSubmitForm(data: string) {
              // обработчик добваления задачи -Когда пользователь добавляет новую задачу:
             this.model.addItem(data);// Добавляет задачу в модель.
-            this.renderView();// Перерисовывает список задач.(обновляем отображение задач)
+          
             this.todoForm.clearValue();//Очищает форму.
         }
         // обработчик сабмита редактирования дела
         handleSubmitEditForm(data: string, id:string){
             this.model.editItem(id, data);
-            this.renderView();
+            
             this.todoEditForm.clearValue()
             this.modal.close()
         }
@@ -77,14 +86,13 @@ export class ItemPresenter {
         //     // Добавляет копию в список.
             this.model.addItem(copyedItem.name); // название используется чтобы создать новое дело
         //     // Перерисовывает интерфейс.
-            this.renderView(); // без дополнитеьных методов вставки обновляем отображение карточек где будет новая карточка
+
         }
         
         handleDeleteItem(item:IViewItem) {
             // удалить элемент из модели
             this.model.removeItem(item.id)
-            // обновить отображение
-            this.renderView()
+          
         }
         // обработчик для самой кнопки редактирования
         handleEditItem(item:IViewItem){

@@ -27,18 +27,18 @@ itemPresenter.renderView();
 
 
 
-const emitter = new EventEmitter();
+// const emitter = new EventEmitter();
 
-// Подписываемся на конкретное событие
-// emitter.on('login', (data) => {
-// 	console.log('✅ User logged in:', data);
+// // Подписываемся на конкретное событие
+// // emitter.on('login', (data) => {
+// // 	console.log('✅ User logged in:', data);
+// // });
+
+// // Подписываемся на ВСЕ события
+// emitter.onAll((event) => {
+// 	console.log('🌐 Событие произошло:', event.eventName, event.data);
 // });
 
-// Подписываемся на ВСЕ события
-emitter.onAll((event) => {
-	console.log('🌐 Событие произошло:', event.eventName, event.data);
-});
-
-// Эмитим событие
-emitter.emit('login', { user: 'Alice' });
+// // Эмитим событие
+// emitter.emit('login', { user: 'Alice' });
 
