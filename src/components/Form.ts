@@ -7,7 +7,7 @@ import { EventEmitter, IEvents } from "./EventEmitter";
 export interface IForm  extends IEvents{
   buttonText: string;
   placeHolder: string;
-  setHandler(handler: Function): void
+  // setHandler(handler: Function): void
   render(): HTMLFormElement;
   setValue(data:string):void;
   getValue():string;
@@ -24,7 +24,7 @@ export interface IFormConstructor {
 export  class Form  extends EventEmitter implements IForm {
   protected formElement: HTMLFormElement;
   protected inputField: HTMLInputElement;
-  protected handleFormSubmit: Function;
+  // protected handleFormSubmit: Function;
   protected submitButton: HTMLButtonElement;
 
   constructor(formTemplate: HTMLTemplateElement) {
@@ -34,18 +34,26 @@ export  class Form  extends EventEmitter implements IForm {
     this.inputField = this.formElement.querySelector('.todo-form__input') as HTMLInputElement;
     this.submitButton = this.formElement.querySelector('.todo-form__submit-btn');
 
+    // this.formElement.addEventListener('submit',(evt)=>{
+    //   evt.preventDefault();
+    //   // обработчик действий пользователя содержится вне класса , но является полем класса
+    //   this.handleFormSubmit(this.inputField.value)
+
+    // })
     this.formElement.addEventListener('submit',(evt)=>{
-      evt.preventDefault();
-      // обработчик действий пользователя содержится вне класса , но является полем класса
-      this.handleFormSubmit(this.inputField.value)
-
-    })
+        evt.preventDefault();
+        // сгенерировали событие submit
+        this.emit('submit',{value: this.inputField.value})
+        // // обработчик действий пользователя содержится вне класса , но является полем класса
+        // this.handleFormSubmit(this.inputField.value)
+  
+      })
 
   }
 
-  setHandler(handleFormSubmit: Function){
-    this.handleFormSubmit = handleFormSubmit
-  }
+  // setHandler(handleFormSubmit: Function){
+  //   this.handleFormSubmit = handleFormSubmit
+  // }
   
   render(){
     return this.formElement

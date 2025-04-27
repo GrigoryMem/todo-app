@@ -19,6 +19,7 @@ export class ItemPresenter {
 	protected formTemplate: HTMLTemplateElement;
 	protected todoForm: IForm;
 	protected todoEditForm: IForm;
+    protected handleSubmitEditForm:(data:{value:string})=>void
 
 	constructor(
         // создание экземпляров визуальных компонентов на основе шаблонов.
@@ -38,12 +39,13 @@ export class ItemPresenter {
         }
 
         init() {
+            // Создаем экземпляр формы для создания нового дела
             // инициализацию формы ввода задачи;
             // Создает форму ДОБАВЛЕНИЯ нового дела с помощью конструктора формы и переданного шаблона.
             // данная форма отображается сразу на главной странице
             this.todoForm = new this.formConstructor(this.formTemplate) // обяз соответствие интерфейсу IFormConstructor
             // Устанавливает обработчик события "отправки формы" — handleSubmitForm.
-            this.todoForm.setHandler(this.handleSubmitForm.bind(this));
+          
             this.todoForm.buttonText = 'Добавить'
             this.todoForm.placeHolder = 'Следующее дело'
             // Вставляет форму в интерфейс (formContainer).
@@ -60,25 +62,26 @@ export class ItemPresenter {
                 // Перерисовывает список задач.(обновляем отображение задач)
                 this.renderView()
             })
-       
+            // ????
+            // либо использовать bind чтобы не потерять контекст при работе слушателей:
+            this.todoForm.on('submit',this.handleSubmitForm.bind(this));
+            // чтобы зафиксировать id элемента которыймы редактируем
+            // обработчик сабмита редактирования дела 
+            // - устанавливается при каждом открытии модального окна
+            //  когда мы редактируем дело
+            //  засчет стрелочной функции не теряется контекст - он будет вызван с привязкой к этому классу Item{resenter}
+            this.todoEditForm.on('submit',(data:{value:string})=>this.handleSubmitEditForm(data))
            
             
         }
 
-        handleSubmitForm(data: string) {
+        handleSubmitForm(data: {value:string}) {
              // обработчик добваления задачи -Когда пользователь добавляет новую задачу:
-            this.model.addItem(data);// Добавляет задачу в модель.
+            this.model.addItem(data.value);// Добавляет задачу в модель.
           
             this.todoForm.clearValue();//Очищает форму.
         }
-        // обработчик сабмита редактирования дела
-        handleSubmitEditForm(data: string, id:string){
-            this.model.editItem(id, data);
-            
-            this.todoEditForm.clearValue()
-            this.modal.close()
-        }
-
+     
         handleCopyItem(item: {id: string}) {
             // item: IViewItem - передается объект this см Item метод setCopyHandler т е this это экземпляр отображения карточки
                 //     // обработчик копирования задачи
@@ -106,7 +109,22 @@ export class ItemPresenter {
             this.modal.content = this.todoEditForm.render();
             // устанавливаем обработчик для сабмита формы
             // функция высшего и низшкго порядка???? вспомни карирование и функции высшего низшего порядка?
-            this.todoEditForm.setHandler((data:string)=>this.handleSubmitEditForm(data, item.id))
+            // this.todoEditForm.setHandler((data:string)=>this.handleSubmitEditForm(data, item.id))
+                //  при каждом открытии формы мы пересоздаем функцию обработчик:
+              // обработчик сабмита редактирования дела
+            //   создаем обработчик  редактировани формы при каждом открытии формы
+            this.handleSubmitEditForm = (data: {value:string})=>{
+                // data: {value:string} - новое значение принимается в параметраз обработчика
+                
+                // item.id - замыкание с handleEditItem, получаем id редактируемого элемента
+                // редактируем в модели
+                this.model.editItem(item.id, data.value);
+                // очищаем форму
+                this.todoEditForm.clearValue()
+                // закрываем модалку
+                this.modal.close()
+            }
+
 
             this.modal.open()
         }   
